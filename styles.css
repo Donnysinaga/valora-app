@@ -293,21 +293,36 @@ body {
 }
 
 .logo-icon {
-  width: 42px;
-  height: 42px;
-  background: linear-gradient(135deg, #00FF66 0%, #00C805 100%);
-  border-radius: var(--radius-sm);
+  width: 44px;
+  height: 44px;
+  background: rgba(0, 255, 102, 0.08);
+  border: 1px solid rgba(0, 255, 102, 0.35);
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 20px rgba(0, 255, 102, 0.6);
+  box-shadow: 0 0 20px rgba(0, 255, 102, 0.3);
+  transition: var(--transition-fast);
+  overflow: hidden;
 }
 
-.v-symbol {
-  font-family: var(--font-sans);
-  font-weight: 900;
-  font-size: 1.5rem;
-  color: #040905;
+.valora-logo-img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 6px rgba(0, 255, 102, 0.8));
+}
+
+.valora-eagle-logo path {
+  fill: #FFFFFF !important;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8));
+}
+
+.brand-logo:hover .logo-icon {
+  background: rgba(0, 255, 102, 0.18);
+  border-color: #00FF66;
+  box-shadow: 0 0 25px rgba(0, 255, 102, 0.6);
+  transform: scale(1.05);
 }
 
 .brand-text {
@@ -622,9 +637,14 @@ body {
 
 .core-logo {
   transform: rotate(-45deg);
-  font-size: 2.8rem;
-  font-weight: 900;
-  color: #040905;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.core-svg-logo path {
+  fill: #040905 !important;
+  filter: none !important;
 }
 
 @keyframes float {
