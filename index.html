@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VALORA | Private Equity Payment Infrastructure for Robinhood Chain</title>
+  <meta name="description" content="Valora powers private equity payments through tokenized assets on Robinhood Chain. Instant, secure, and transparent institutional settlements." />
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- ChartJS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="dark-theme">
+  <!-- Dynamic Background Glow Gradients -->
+  <div class="bg-blur blur-1"></div>
+  <div class="bg-blur blur-2"></div>
+  <div class="bg-blur blur-3"></div>
+
+
+  <!-- Header / Navigation -->
+  <header class="site-header" id="header">
+    <div class="container header-inner">
+      <a href="#" class="brand-logo">
+        <div class="logo-icon">
+          <span class="v-symbol">V</span>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">VALORA</span>
+          <span class="brand-tag">ROBINHOOD CHAIN</span>
+        </div>
+      </a>
+
+      <nav class="main-nav">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#solutions" class="nav-link">Solutions</a>
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+        <a href="#dapp-section" class="nav-link">Terminal DApp</a>
+        <a href="#compliance" class="nav-link">Compliance</a>
+        <a href="#ca-section" class="nav-link">Contract</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="btn btn-outline" id="btn-connect-wallet">
+          <i data-lucide="wallet"></i>
+          <span id="wallet-text">Connect Wallet</span>
+        </button>
+        <a href="#dapp-section" class="btn btn-primary">
+          <span>Launch App</span>
+          <i data-lucide="arrow-up-right"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero-section" id="hero">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <div class="hero-pill-badge">
+            <i data-lucide="shield-check"></i>
+            <span>Institutional Grade PE Payment Layer</span>
+          </div>
+          
+          <h1 class="hero-title">
+            Next-Gen <span class="gradient-text">Private Equity</span> Payment Infrastructure
+          </h1>
+
+          <p class="hero-tagline-short">
+            Private equity payment infrastructure for secure tokenized settlements.
+          </p>
+
+          <p class="hero-narrative">
+            Valora powers private equity payments through tokenized assets on Robinhood Chain. It enables secure, instant, and transparent settlement with institutional-grade compliance, escrow protection, and seamless global transactions for modern capital markets.
+          </p>
+
+          <!-- Copyable Contract Address Widget -->
+          <div class="ca-widget">
+            <div class="ca-label">
+              <i data-lucide="cpu"></i>
+              <span>Robinhood Chain Smart Contract Address (CA):</span>
+            </div>
+            <div class="ca-box">
+              <code id="ca-text">0xVAL0RA7796d10398A2f1b40019C8RhChain</code>
+              <button class="btn-copy" id="btn-copy-ca" title="Copy Contract Address">
+                <i data-lucide="copy"></i>
+                <span id="copy-text">Copy</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="hero-actions">
+            <a href="#dapp-section" class="btn btn-primary btn-lg">
+              <i data-lucide="rocket"></i>
+              <span>Launch Terminal App</span>
+            </a>
+            <a href="#how-it-works" class="btn btn-glass btn-lg">
+              <i data-lucide="play-circle"></i>
+              <span>How Valora Works</span>
+            </a>
+            <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="btn btn-icon-only" title="Follow on X (Twitter)">
+              <i data-lucide="twitter"></i>
+            </a>
+          </div>
+
+          <!-- Live Stats Row -->
+          <div class="hero-stats">
+            <div class="stat-card">
+              <div class="stat-value gradient-text" id="stat-tvl">$1.24B+</div>
+              <div class="stat-label">Total Value Settled</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="stat-partners">256+</div>
+              <div class="stat-label">Institutional Partners</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="stat-txs">12.8K+</div>
+              <div class="stat-label">Transactions Settled</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value color-cyan">99.99%</div>
+              <div class="stat-label">Robinhood Net Uptime</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D Interactive Hero Card / Graphic -->
+        <div class="hero-visual">
+          <div class="glass-hero-card">
+            <div class="card-glow-effect"></div>
+            
+            <div class="visual-header">
+              <div class="rh-badge">
+                <i data-lucide="layers"></i>
+                <span>Robinhood Chain L2 Settlement</span>
+              </div>
+              <div class="live-block">
+                <span class="pulse-dot green"></span>
+                <span>Block: <strong id="block-height">#14,892,104</strong></span>
+              </div>
+            </div>
+
+            <!-- Dynamic 3D Vault Illustration Container -->
+            <div class="vault-3d-wrapper">
+              <div class="vault-ring ring-1"></div>
+              <div class="vault-ring ring-2"></div>
+              <div class="vault-core">
+                <div class="core-logo">V</div>
+                <div class="core-pulse"></div>
+              </div>
+              
+              <!-- Floating Asset Nodes -->
+              <div class="floating-node node-1" title="Tokenized Asset Vault">
+                <i data-lucide="box"></i>
+                <span>vPE-GROWTH</span>
+              </div>
+              <div class="floating-node node-2" title="Capital Call Escrow">
+                <i data-lucide="lock"></i>
+                <span>Escrow Secured</span>
+              </div>
+              <div class="floating-node node-3" title="Cross-Border FX">
+                <i data-lucide="globe"></i>
+                <span>Global Settlement</span>
+              </div>
+            </div>
+
+            <div class="visual-footer">
+              <div class="tx-pulse-bar">
+                <div class="tx-info">
+                  <span class="tx-title">Latest Capital Call Settlement</span>
+                  <span class="tx-meta" id="live-tx-meta">Growth Fund III • $5,250,000</span>
+                </div>
+                <span class="badge badge-success">Instant Finality</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRUSTED PARTNERS BANNER -->
+    <section class="partners-section">
+      <div class="container">
+        <p class="partners-title">TRUSTED BY INSTITUTIONAL CAPITAL LEADERS ON ROBINHOOD CHAIN</p>
+        <div class="partners-marquee">
+          <div class="partner-item"><i data-lucide="shield"></i> a16z crypto</div>
+          <div class="partner-item"><i data-lucide="trending-up"></i> SEQUOIA PE</div>
+          <div class="partner-item"><i data-lucide="disc"></i> coinbase ventures</div>
+          <div class="partner-item"><i data-lucide="compass"></i> PANTERA</div>
+          <div class="partner-item"><i data-lucide="zap"></i> JUMP CAPITAL</div>
+          <div class="partner-item"><i data-lucide="feather"></i> ROBINHOOD INST</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CORE FEATURES SECTION -->
+    <section class="features-section" id="features">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-badge">OUR CAPABILITIES</span>
+          <h2 class="section-title">Everything You Need for <span class="gradient-text">Private Equity Payments</span></h2>
+          <p class="section-subtitle">
+            A comprehensive suite of smart contracts and tokenization utilities built natively for institutional transactions on Robinhood Chain.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <!-- Feature 1 -->
+          <div class="feature-card" data-feature="pe-payments">
+            <div class="feature-icon">
+              <i data-lucide="credit-card"></i>
+            </div>
+            <h3 class="feature-title">Private Equity Payments</h3>
+            <p class="feature-desc">
+              Automate capital calls, LP investor distributions, and GP management fee payouts seamlessly on-chain with programmable payout schedules.
+            </p>
+            <ul class="feature-list">
+              <li><i data-lucide="check"></i> Automated Capital Call Notices</li>
+              <li><i data-lucide="check"></i> Pro-rata Waterfall Distributions</li>
+              <li><i data-lucide="check"></i> Zero Slippage Fee Collection</li>
+            </ul>
+            <div class="feature-footer">
+              <span class="feature-link">Simulate Payment &rarr;</span>
+            </div>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="feature-card" data-feature="tokenized-asset">
+            <div class="feature-icon">
+              <i data-lucide="landmark"></i>
+            </div>
+            <h3 class="feature-title">Tokenized Asset Settlement</h3>
+            <p class="feature-desc">
+              Settle transactions instantly using tokenized equities, fund shares, and real-world private equity assets (RWA) with ERC-3643 compliance.
+            </p>
+            <ul class="feature-list">
+              <li><i data-lucide="check"></i> ERC-3643 Institutional Tokens</li>
+              <li><i data-lucide="check"></i> Atomic Swap Finality</li>
+              <li><i data-lucide="check"></i> Real-time Share Registry</li>
+            </ul>
+            <div class="feature-footer">
+              <span class="feature-link">View Token Engine &rarr;</span>
+            </div>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="feature-card" data-feature="escrow">
+            <div class="feature-icon">
+              <i data-lucide="shield-lock"></i>
+            </div>
+            <h3 class="feature-title">Secure On-Chain Escrow</h3>
+            <p class="feature-desc">
+              Smart contract escrow vaults safeguard capital until deal closing conditions, milestone verifications, or GP approvals are satisfied.
+            </p>
+            <ul class="feature-list">
+              <li><i data-lucide="check"></i> Multi-Sig GP/LP Sign-Off</li>
+              <li><i data-lucide="check"></i> Time-Locked Milestone Tranches</li>
+              <li><i data-lucide="check"></i> Automated Refund Safeguards</li>
+            </ul>
+            <div class="feature-footer">
+              <span class="feature-link">Manage Escrow &rarr;</span>
+            </div>
+          </div>
+
+          <!-- Feature 4 -->
+          <div class="feature-card" data-feature="global-transfers">
+            <div class="feature-icon">
+              <i data-lucide="globe"></i>
+            </div>
+            <h3 class="feature-title">Global Cross-Border Transfers</h3>
+            <p class="feature-desc">
+              Move multi-currency capital globally with sub-second execution and ultra-low Robinhood Chain gas fees, bypassing legacy SWIFT delays.
+            </p>
+            <ul class="feature-list">
+              <li><i data-lucide="check"></i> Multi-Currency FX Settlement</li>
+              <li><i data-lucide="check"></i> 99.8% Fee Reduction vs Banks</li>
+              <li><i data-lucide="check"></i> Instant 24/7 Global Availability</li>
+            </ul>
+            <div class="feature-footer">
+              <span class="feature-link">Try FX Converter &rarr;</span>
+            </div>
+          </div>
+
+          <!-- Feature 5 -->
+          <div class="feature-card" data-feature="instant-settlement">
+            <div class="feature-icon">
+              <i data-lucide="zap"></i>
+            </div>
+            <h3 class="feature-title">Instant Institutional Settlement</h3>
+            <p class="feature-desc">
+              Eliminate T+2 friction. Execute atomic real-time clearing for private equity funds, venture capital capital calls, and secondary transfers.
+            </p>
+            <ul class="feature-list">
+              <li><i data-lucide="check"></i> Sub-Second Block Finality</li>
+              <li><i data-lucide="check"></i> Guaranteed Delivery vs Payment</li>
+              <li><i data-lucide="check"></i> Robinhood Chain Native Speed</li>
+            </ul>
+            <div class="feature-footer">
+              <span class="feature-link">Check Benchmarks &rarr;</span>
+            </div>
+          </div>
+
+          <!-- Feature 6 -->
+          <div class="feature-card" data-feature="compliance">
+            <div class="feature-icon">
+              <i data-lucide="file-check-2"></i>
+            </div>
+            <h3 class="feature-title">Compliance & Audit Layer</h3>
+            <p class="feature-desc">
+              Built-in ZK-KYC/AML verification, permissioned investor whitelisting, and cryptographic audit logs engineered for global regulators.
+            </p>
+            <ul class="feature-list">
+              <li><i data-lucide="check"></i> Zero-Knowledge Proof KYC</li>
+              <li><i data-lucide="check"></i> Automated Tax & Audit Export</li>
+              <li><i data-lucide="check"></i> OFAC & Sanctions Screening</li>
+            </ul>
+            <div class="feature-footer">
+              <span class="feature-link">View Audit Suite &rarr;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS SECTION -->
+    <section class="how-it-works" id="how-it-works">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-badge">WORKFLOW</span>
+          <h2 class="section-title">Simple. Secure. <span class="gradient-text">Powerful.</span></h2>
+          <p class="section-subtitle">Powering the future of private equity payments in 4 seamless steps on Robinhood Chain.</p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-num">01</div>
+            <div class="step-icon"><i data-lucide="user-check"></i></div>
+            <h4>Connect & Verify</h4>
+            <p>Institutional funds and accredited investors connect their wallet and complete instant ZK-KYC compliance verification.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-num">02</div>
+            <div class="step-icon"><i data-lucide="sliders"></i></div>
+            <h4>Initiate Transaction</h4>
+            <p>Select your payment type: Capital Call notice, LP distribution waterfall, management fee, or secondary tokenized asset swap.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-num">03</div>
+            <div class="step-icon"><i data-lucide="lock"></i></div>
+            <h4>Secure & Settle</h4>
+            <p>Funds locked in smart contract escrow vaults settle instantly on Robinhood Chain once condition triggers are satisfied.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-num">04</div>
+            <div class="step-icon"><i data-lucide="file-spreadsheet"></i></div>
+            <h4>Track & Audit</h4>
+            <p>Monitor real-time settlement telemetry, view transparent ledger records, and generate audit-ready compliance reports.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE DAPP TERMINAL SECTION -->
+    <section class="dapp-section" id="dapp-section">
+      <div class="container">
+        <div class="dapp-container-box">
+          
+          <!-- Terminal Header -->
+          <div class="dapp-header">
+            <div class="dapp-brand">
+              <div class="dapp-logo">V</div>
+              <div>
+                <h3 class="dapp-title">VALORA Institutional Payment Terminal</h3>
+                <span class="dapp-sub">Robinhood Chain Mainnet Node • Active Session</span>
+              </div>
+            </div>
+
+            <!-- Terminal Tabs -->
+            <div class="dapp-tabs" role="tablist">
+              <button class="tab-btn active" data-tab="tab-overview">
+                <i data-lucide="layout-dashboard"></i> Overview
+              </button>
+              <button class="tab-btn" data-tab="tab-payment">
+                <i data-lucide="send"></i> PE Payment Simulator
+              </button>
+              <button class="tab-btn" data-tab="tab-tokens">
+                <i data-lucide="coins"></i> Tokenized Assets
+              </button>
+              <button class="tab-btn" data-tab="tab-escrow">
+                <i data-lucide="shield"></i> Escrow Vaults
+              </button>
+              <button class="tab-btn" data-tab="tab-fx">
+                <i data-lucide="arrow-left-right"></i> Cross-Border FX
+              </button>
+              <button class="tab-btn" data-tab="tab-compliance">
+                <i data-lucide="file-text"></i> Audit Logs
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB CONTENT 1: OVERVIEW DASHBOARD -->
+          <div class="tab-content active" id="tab-overview">
+            <div class="dashboard-stats-grid">
+              <div class="dash-stat">
+                <div class="dash-stat-top">
+                  <span>Total Settled Volume</span>
+                  <i data-lucide="trending-up" class="color-green"></i>
+                </div>
+                <div class="dash-stat-val" id="dash-val-volume">$1,248,920,400</div>
+                <div class="dash-stat-change green">+18.4% this month</div>
+              </div>
+
+              <div class="dash-stat">
+                <div class="dash-stat-top">
+                  <span>Total Transactions</span>
+                  <i data-lucide="activity" class="color-purple"></i>
+                </div>
+                <div class="dash-stat-val" id="dash-val-txs">12,842</div>
+                <div class="dash-stat-change green">+24.2% this month</div>
+              </div>
+
+              <div class="dash-stat">
+                <div class="dash-stat-top">
+                  <span>Active Institutional Funds</span>
+                  <i data-lucide="building-2" class="color-cyan"></i>
+                </div>
+                <div class="dash-stat-val">156 Funds</div>
+                <div class="dash-stat-change">+12 new this week</div>
+              </div>
+
+              <div class="dash-stat">
+                <div class="dash-stat-top">
+                  <span>Compliance Pass Rate</span>
+                  <i data-lucide="shield-check" class="color-green"></i>
+                </div>
+                <div class="dash-stat-val">100.0%</div>
+                <div class="dash-stat-change green">Zero Compliance Violations</div>
+              </div>
+            </div>
+
+            <!-- Dashboard Charts Row -->
+            <div class="dashboard-charts-grid">
+              <div class="chart-card">
+                <div class="chart-card-header">
+                  <h4>Settlement Volume Telemetry (USD)</h4>
+                  <span class="badge badge-outline">2026 YTD</span>
+                </div>
+                <div class="chart-wrapper">
+                  <canvas id="volumeChart"></canvas>
+                </div>
+              </div>
+
+              <div class="chart-card">
+                <div class="chart-card-header">
+                  <h4>Transaction Type Allocation</h4>
+                  <span class="badge badge-outline">Live Breakdown</span>
+                </div>
+                <div class="chart-wrapper">
+                  <canvas id="allocationChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent On-Chain Settlement Ledger -->
+            <div class="table-card">
+              <div class="table-card-header">
+                <div>
+                  <h4>Live On-Chain Settlement Ledger</h4>
+                  <p class="text-sm">Real-time settlement stream verified on Robinhood Chain</p>
+                </div>
+                <button class="btn btn-sm btn-outline" id="btn-refresh-ledger">
+                  <i data-lucide="refresh-cw"></i> Refresh
+                </button>
+              </div>
+
+              <div class="table-responsive">
+                <table class="valora-table" id="ledger-table">
+                  <thead>
+                    <tr>
+                      <th>TX Hash</th>
+                      <th>Type</th>
+                      <th>Fund / Counterparty</th>
+                      <th>Amount (USD)</th>
+                      <th>Status</th>
+                      <th>Robinhood Block</th>
+                      <th>Timestamp</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ledger-body">
+                    <!-- Dynamic Ledger Rows inserted via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB CONTENT 2: PE PAYMENT SIMULATOR -->
+          <div class="tab-content" id="tab-payment">
+            <div class="simulator-layout">
+              <div class="sim-form-card">
+                <div class="card-header">
+                  <h4>Execute Private Equity Payment</h4>
+                  <p class="text-sm">Submit a Capital Call notice, LP distribution, or fee payout on Robinhood Chain</p>
+                </div>
+
+                <form id="payment-form">
+                  <div class="form-group">
+                    <label>Payment Category</label>
+                    <select id="pay-type" class="form-control">
+                      <option value="Capital Call">Capital Call Notice</option>
+                      <option value="Distribution">Investor Distribution Waterfall</option>
+                      <option value="Management Fee">Management Fee Payout</option>
+                    </select>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Select Fund</label>
+                      <select id="pay-fund" class="form-control">
+                        <option value="Valora Growth Fund III">Valora Growth Fund III (vPE-GROWTH)</option>
+                        <option value="Robinhood VC Fund II">Robinhood VC Fund II (vPE-VENTURE)</option>
+                        <option value="Apex Infrastructure Fund">Apex Infrastructure Fund (vPE-INFRA)</option>
+                        <option value="Global Buyout Fund V">Global Buyout Fund V (vPE-BUYOUT)</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Payment Amount (USD)</label>
+                      <input type="number" id="pay-amount" class="form-control" value="2500000" min="1000" step="50000" required />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Recipient / LP Escrow Address</label>
+                    <input type="text" id="pay-recipient" class="form-control" value="0x71C7656EC7ab88b098defB751B7401B5f6d8976F" required />
+                  </div>
+
+                  <div class="form-group">
+                    <label>Settlement Token Asset</label>
+                    <select id="pay-token" class="form-control">
+                      <option value="USDC (Tokenized USD)">USDC - Tokenized US Dollar</option>
+                      <option value="vUSD (Robinhood Private Dollar)">vUSD - Robinhood Private Vault Dollar</option>
+                      <option value="EURv (Tokenized Euro)">EURv - Institutional Tokenized Euro</option>
+                    </select>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary btn-block">
+                    <i data-lucide="zap"></i>
+                    <span>Execute Instant On-Chain Payment</span>
+                  </button>
+                </form>
+              </div>
+
+              <!-- Terminal Logs Console -->
+              <div class="sim-terminal-card">
+                <div class="terminal-header">
+                  <div class="terminal-dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                  </div>
+                  <span class="terminal-title">Robinhood Chain Settlement Terminal</span>
+                </div>
+                <div class="terminal-body" id="payment-terminal-logs">
+                  <div class="log-line text-muted">[SYSTEM] Valora Smart Contract Engine v2.4 Ready</div>
+                  <div class="log-line text-muted">[SYSTEM] Connected to Robinhood Chain Node RPC</div>
+                  <div class="log-line color-cyan">[READY] Fill out form to execute settlement simulation</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB CONTENT 3: TOKENIZED ASSETS -->
+          <div class="tab-content" id="tab-tokens">
+            <div class="tokens-header">
+              <h4>Institutional Tokenized Private Equity Registry</h4>
+              <p class="text-sm">Manage, issue, and trade ERC-3643 compliant PE fund shares on Robinhood Chain</p>
+            </div>
+
+            <div class="tokens-grid">
+              <div class="token-card">
+                <div class="token-top">
+                  <div class="token-badge">vPE-GROWTH</div>
+                  <span class="badge badge-success">Active Trading</span>
+                </div>
+                <h3 class="token-name">Valora Growth Fund III</h3>
+                <div class="token-metrics">
+                  <div><span>NAV Per Share:</span> <strong>$142.50</strong></div>
+                  <div><span>Total AUM:</span> <strong>$450,000,000</strong></div>
+                  <div><span>IRR (Net):</span> <strong class="color-green">24.6%</strong></div>
+                  <div><span>Robinhood Standard:</span> <strong>ERC-3643</strong></div>
+                </div>
+                <button class="btn btn-sm btn-outline btn-block mt-3 btn-mint-token" data-token="vPE-GROWTH">
+                  <i data-lucide="plus-circle"></i> Settle Share Mint
+                </button>
+              </div>
+
+              <div class="token-card">
+                <div class="token-top">
+                  <div class="token-badge">vPE-VENTURE</div>
+                  <span class="badge badge-success">Active Trading</span>
+                </div>
+                <h3 class="token-name">Robinhood VC Fund II</h3>
+                <div class="token-metrics">
+                  <div><span>NAV Per Share:</span> <strong>$88.20</strong></div>
+                  <div><span>Total AUM:</span> <strong>$280,000,000</strong></div>
+                  <div><span>IRR (Net):</span> <strong class="color-green">31.2%</strong></div>
+                  <div><span>Robinhood Standard:</span> <strong>ERC-3643</strong></div>
+                </div>
+                <button class="btn btn-sm btn-outline btn-block mt-3 btn-mint-token" data-token="vPE-VENTURE">
+                  <i data-lucide="plus-circle"></i> Settle Share Mint
+                </button>
+              </div>
+
+              <div class="token-card">
+                <div class="token-top">
+                  <div class="token-badge">vPE-BUYOUT</div>
+                  <span class="badge badge-success">Active Trading</span>
+                </div>
+                <h3 class="token-name">Global Buyout Partners V</h3>
+                <div class="token-metrics">
+                  <div><span>NAV Per Share:</span> <strong>$215.10</strong></div>
+                  <div><span>Total AUM:</span> <strong>$890,000,000</strong></div>
+                  <div><span>IRR (Net):</span> <strong class="color-green">19.8%</strong></div>
+                  <div><span>Robinhood Standard:</span> <strong>ERC-3643</strong></div>
+                </div>
+                <button class="btn btn-sm btn-outline btn-block mt-3 btn-mint-token" data-token="vPE-BUYOUT">
+                  <i data-lucide="plus-circle"></i> Settle Share Mint
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB CONTENT 4: ESCROW VAULTS -->
+          <div class="tab-content" id="tab-escrow">
+            <div class="escrow-layout">
+              <div class="escrow-create-card">
+                <div class="card-header">
+                  <h4>Create On-Chain Smart Escrow Vault</h4>
+                  <p class="text-sm">Lock funds on Robinhood Chain until milestone conditions & signatures are verified</p>
+                </div>
+
+                <form id="escrow-form">
+                  <div class="form-group">
+                    <label>Escrow Title / Deal Name</label>
+                    <input type="text" id="escrow-title" class="form-control" placeholder="e.g. Series B Milestone Escrow" value="Growth Fund III - Tranche A Escrow" required />
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Escrow Amount (USD)</label>
+                      <input type="number" id="escrow-amount" class="form-control" value="5000000" step="100000" required />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Release Condition</label>
+                      <select id="escrow-condition" class="form-control">
+                        <option value="2-of-3 Multi-Sig GP Approval">2-of-3 Multi-Sig GP Approval</option>
+                        <option value="Regulatory Clearance Milestone">Regulatory Clearance Milestone</option>
+                        <option value="Time-Locked 30-Day Timelock">Time-Locked 30-Day Timelock</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary btn-block">
+                    <i data-lucide="shield-check"></i>
+                    <span>Deploy Escrow Vault</span>
+                  </button>
+                </form>
+              </div>
+
+              <div class="escrow-list-card">
+                <h4>Active Smart Escrow Vaults</h4>
+                <div class="escrow-vault-items" id="escrow-vault-list">
+                  <div class="vault-item">
+                    <div class="vault-item-header">
+                      <strong>Growth Fund III - Tranche A</strong>
+                      <span class="badge badge-warning">Locked in Escrow</span>
+                    </div>
+                    <div class="vault-item-details">
+                      <div>Amount: <strong>$5,000,000 USD</strong></div>
+                      <div>Condition: <span>2-of-3 Multi-Sig GP Approval</span></div>
+                      <div>Vault Contract: <code>0x892F...C14a</code></div>
+                    </div>
+                    <button class="btn btn-sm btn-success mt-2 btn-release-escrow">Release Funds</button>
+                  </div>
+
+                  <div class="vault-item">
+                    <div class="vault-item-header">
+                      <strong>Robinhood VC - Tech Acquisition Escrow</strong>
+                      <span class="badge badge-success">Released / Settled</span>
+                    </div>
+                    <div class="vault-item-details">
+                      <div>Amount: <strong>$12,500,000 USD</strong></div>
+                      <div>Condition: <span>Regulatory Clearance Milestone</span></div>
+                      <div>Vault Contract: <code>0x3A11...E990</code></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB CONTENT 5: CROSS BORDER FX -->
+          <div class="tab-content" id="tab-fx">
+            <div class="fx-converter-wrapper">
+              <div class="fx-card">
+                <h4>Global Cross-Border FX Settlement Engine</h4>
+                <p class="text-sm">Convert and settle multi-currency private equity capital instantly on Robinhood Chain</p>
+
+                <div class="fx-box">
+                  <div class="fx-input-group">
+                    <label>From Currency & Amount</label>
+                    <div class="fx-input-wrapper">
+                      <input type="number" id="fx-amount-from" class="form-control" value="1000000" min="100" />
+                      <select id="fx-curr-from" class="form-control select-curr">
+                        <option value="USD">USD - US Dollar</option>
+                        <option value="EUR">EUR - Euro</option>
+                        <option value="GBP">GBP - British Pound</option>
+                        <option value="SGD">SGD - Singapore Dollar</option>
+                        <option value="JPY">JPY - Japanese Yen</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="fx-swap-icon" id="fx-btn-swap">
+                    <i data-lucide="arrow-left-right"></i>
+                  </div>
+
+                  <div class="fx-input-group">
+                    <label>To Settled Target Currency</label>
+                    <div class="fx-input-wrapper">
+                      <input type="text" id="fx-amount-to" class="form-control" value="920,500.00" readonly />
+                      <select id="fx-curr-to" class="form-control select-curr">
+                        <option value="EUR">EUR - Euro</option>
+                        <option value="USD">USD - US Dollar</option>
+                        <option value="GBP">GBP - British Pound</option>
+                        <option value="SGD">SGD - Singapore Dollar</option>
+                        <option value="JPY">JPY - Japanese Yen</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="fx-rate-details">
+                  <div><span>Robinhood FX Rate:</span> <strong id="fx-rate-display">1 USD = 0.9205 EUR</strong></div>
+                  <div><span>Estimated Settlement Speed:</span> <strong class="color-green">0.42 Seconds (Instant)</strong></div>
+                  <div><span>Network Gas Fee:</span> <strong class="color-cyan">&lt; $0.001 USD (Robinhood Chain)</strong></div>
+                </div>
+
+                <button class="btn btn-primary btn-block mt-3" id="btn-execute-fx">
+                  <i data-lucide="globe"></i>
+                  <span>Execute Global Settlement</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB CONTENT 6: AUDIT & COMPLIANCE LOGS -->
+          <div class="tab-content" id="tab-compliance">
+            <div class="compliance-header">
+              <div>
+                <h4>Institutional Compliance & Cryptographic Audit Logs</h4>
+                <p class="text-sm">Inspect zero-knowledge KYC proofs, sanctions screenings, and audit records</p>
+              </div>
+              <button class="btn btn-outline btn-sm" id="btn-export-audit">
+                <i data-lucide="download"></i> Export JSON Audit Log
+              </button>
+            </div>
+
+            <div class="compliance-search-bar">
+              <div class="search-input-box">
+                <i data-lucide="search"></i>
+                <input type="text" id="compliance-search" placeholder="Search by Wallet, TX Hash, or Fund Name..." class="form-control" />
+              </div>
+              <select id="compliance-filter" class="form-control select-filter">
+                <option value="ALL">All Compliance Statuses</option>
+                <option value="VERIFIED">ZK-KYC Verified</option>
+                <option value="CLEARED">OFAC Sanction Cleared</option>
+                <option value="ESCROW">Escrow Verified</option>
+              </select>
+            </div>
+
+            <div class="table-responsive mt-3">
+              <table class="valora-table" id="compliance-table">
+                <thead>
+                  <tr>
+                    <th>Audit ID</th>
+                    <th>Investor / Entity</th>
+                    <th>ZK-KYC Hash</th>
+                    <th>Sanction Status</th>
+                    <th>Jurisdiction</th>
+                    <th>Timestamp</th>
+                  </tr>
+                </thead>
+                <tbody id="compliance-body">
+                  <!-- JS Inserted Compliance rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TOKENOMICS & ROBINHOOD CHAIN NETWORK SPEC -->
+    <section class="ca-section" id="ca-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-badge">ROBINHOOD CHAIN SPECIFICATIONS</span>
+          <h2 class="section-title">Built Natively for <span class="gradient-text">Robinhood Chain</span></h2>
+          <p class="section-subtitle">Hyper-scalable, low-latency, and institution-ready layer 2 payment network.</p>
+        </div>
+
+        <div class="ca-cards-grid">
+          <div class="ca-info-card">
+            <div class="ca-card-icon"><i data-lucide="cpu"></i></div>
+            <h4>Smart Contract Address (CA)</h4>
+            <code class="ca-full-code">0xVAL0RA7796d10398A2f1b40019C8RobinhoodChain</code>
+            <p class="text-sm text-muted mt-2">Verified source code deployed on Robinhood Chain Mainnet/Testnet RPC.</p>
+            <button class="btn btn-sm btn-outline mt-3 btn-copy-secondary">
+              <i data-lucide="copy"></i> Copy Contract Address
+            </button>
+          </div>
+
+          <div class="ca-info-card">
+            <div class="ca-card-icon"><i data-lucide="zap"></i></div>
+            <h4>Sub-Second Settlement</h4>
+            <p>Average transaction finality achieved in under 450ms, enabling true instant capital calls and LP liquidations.</p>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar" style="width: 98%;"></div>
+            </div>
+            <span class="text-xs text-green">99.8% faster than traditional bank wires</span>
+          </div>
+
+          <div class="ca-info-card">
+            <div class="ca-card-icon"><i data-lucide="shield-check"></i></div>
+            <h4>Institutional ZK Security</h4>
+            <p>Zero-Knowledge privacy proofs ensure LP capital call details remain confidential while satisfying regulatory audits.</p>
+            <div class="badge badge-success mt-2">Certified Security Audit</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <section class="cta-section">
+      <div class="container text-center">
+        <div class="cta-box">
+          <h2 class="cta-title">Ready to Transform Your Private Equity Payments?</h2>
+          <p class="cta-desc">
+            Join leading institutions, fund managers, and LPs building the future of capital markets on Robinhood Chain with Valora.
+          </p>
+          <div class="cta-buttons">
+            <a href="#dapp-section" class="btn btn-primary btn-lg">
+              <i data-lucide="rocket"></i> Launch Terminal App
+            </a>
+            <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-lg">
+              <i data-lucide="twitter"></i> Join Community on X
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="brand-logo">
+          <div class="logo-icon"><span class="v-symbol">V</span></div>
+          <span class="brand-name">VALORA</span>
+        </a>
+        <p class="footer-desc">
+          Valora is the next-generation private equity payment infrastructure built on Robinhood Chain.
+        </p>
+        <div class="footer-socials">
+          <a href="https://x.com" target="_blank" rel="noopener noreferrer" title="X (Twitter)"><i data-lucide="twitter"></i></a>
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer" title="GitHub"><i data-lucide="github"></i></a>
+          <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" title="Telegram"><i data-lucide="send"></i></a>
+          <a href="https://discord.com" target="_blank" rel="noopener noreferrer" title="Discord"><i data-lucide="message-square"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-links-group">
+        <div class="footer-col">
+          <h5>Products</h5>
+          <ul>
+            <li><a href="#features">Private Equity Payments</a></li>
+            <li><a href="#features">Tokenized Asset Settlement</a></li>
+            <li><a href="#features">Secure On-Chain Escrow</a></li>
+            <li><a href="#features">Global Cross-Border FX</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Ecosystem</h5>
+          <ul>
+            <li><a href="#dapp-section">Terminal DApp</a></li>
+            <li><a href="#ca-section">Robinhood Chain RPC</a></li>
+            <li><a href="#compliance">Compliance Layer</a></li>
+            <li><a href="#ca-section">Contract (CA)</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Resources</h5>
+          <ul>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">Whitepaper v2.0</a></li>
+            <li><a href="#">Audit Reports</a></li>
+            <li><a href="#">API Reference</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container bottom-inner">
+        <span>&copy; 2026 VALORA Infrastructure. All rights reserved. Launching on Robinhood Chain.</span>
+        <div class="legal-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Institutional Compliance</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Wallet Connection Modal -->
+  <div class="modal-backdrop" id="wallet-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Connect Wallet</h3>
+          <p class="text-sm text-muted">Select provider to access Robinhood Chain DApp</p>
+        </div>
+        <button class="modal-close" id="btn-close-wallet-modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Connecting Spinner State -->
+        <div class="wallet-connecting-state" id="wallet-connecting-state" style="display: none;">
+          <div class="spinner"></div>
+          <p id="connecting-status-text">Connecting to Robinhood Wallet...</p>
+        </div>
+
+        <!-- Wallet Providers List -->
+        <div class="wallet-providers-list" id="wallet-providers-list">
+          <button class="wallet-provider-btn" data-provider="Robinhood Wallet">
+            <div class="provider-info">
+              <div class="provider-icon icon-rh">
+                <i data-lucide="feather"></i>
+              </div>
+              <div class="provider-name">
+                <strong>Robinhood Wallet</strong>
+                <span class="text-xs text-muted">Native Robinhood Chain L2</span>
+              </div>
+            </div>
+            <span class="badge badge-rh">Recommended</span>
+          </button>
+
+          <button class="wallet-provider-btn" data-provider="MetaMask">
+            <div class="provider-info">
+              <div class="provider-icon icon-mm">
+                <i data-lucide="shield"></i>
+              </div>
+              <div class="provider-name">
+                <strong>MetaMask</strong>
+                <span class="text-xs text-muted">Popular Browser Extension</span>
+              </div>
+            </div>
+            <i data-lucide="chevron-right" class="text-muted"></i>
+          </button>
+
+          <button class="wallet-provider-btn" data-provider="Coinbase Wallet">
+            <div class="provider-info">
+              <div class="provider-icon icon-cb">
+                <i data-lucide="disc"></i>
+              </div>
+              <div class="provider-name">
+                <strong>Coinbase Wallet</strong>
+                <span class="text-xs text-muted">Institutional Vault Ready</span>
+              </div>
+            </div>
+            <i data-lucide="chevron-right" class="text-muted"></i>
+          </button>
+
+          <button class="wallet-provider-btn" data-provider="WalletConnect">
+            <div class="provider-info">
+              <div class="provider-icon icon-wc">
+                <i data-lucide="qr-code"></i>
+              </div>
+              <div class="provider-name">
+                <strong>WalletConnect</strong>
+                <span class="text-xs text-muted">Mobile App & QR Scanner</span>
+              </div>
+            </div>
+            <i data-lucide="chevron-right" class="text-muted"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connected Wallet Account Modal -->
+  <div class="modal-backdrop" id="account-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Connected Account</h3>
+          <span class="badge badge-success mt-1"><i data-lucide="check-circle-2"></i> Robinhood Chain Mainnet</span>
+        </div>
+        <button class="modal-close" id="btn-close-account-modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="account-card-box">
+          <div class="account-addr-row">
+            <div>
+              <span class="text-xs text-muted">Wallet Address</span>
+              <div class="account-addr" id="account-full-addr">0x71C7656EC7ab88b098defB751B7401B5f6d8976F</div>
+            </div>
+            <button class="btn btn-sm btn-outline" id="btn-copy-account-addr">
+              <i data-lucide="copy"></i> Copy
+            </button>
+          </div>
+
+          <div class="account-balance-box">
+            <span class="text-xs text-muted">Total Portfolio Balance</span>
+            <h2 class="account-total" id="account-total-balance">$1,878,125.00 USD</h2>
+            <div class="balance-breakdown">
+              <div class="breakdown-item">
+                <span>vUSD Vault:</span>
+                <strong>$1,250,000.00</strong>
+              </div>
+              <div class="breakdown-item">
+                <span>USDC Token:</span>
+                <strong>$450,000.00</strong>
+              </div>
+              <div class="breakdown-item">
+                <span>vPE-GROWTH:</span>
+                <strong>1,250 Shares</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="account-actions">
+            <button class="btn btn-outline btn-block" id="btn-explorer">
+              <i data-lucide="external-link"></i> View on Robinhood Explorer
+            </button>
+            <button class="btn btn-danger btn-block mt-2" id="btn-disconnect-wallet">
+              <i data-lucide="log-out"></i> Disconnect Wallet
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- JavaScript -->
+  <script src="app.js"></script>
+</body>
+</html>
