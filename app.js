@@ -71,10 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 3. Connect Wallet & Interactive Modal Engine
+  // 3. Connect Wallet Engine (Web3 EIP-1193 + Interactive Modal Fallback)
   let isWalletConnected = false;
-  let currentProvider = 'Robinhood Wallet';
-  const fullAddress = '0x71C7656EC7ab88b098defB751B7401B5f6d8976F';
+  let activeAddress = '0x71C7656EC7ab88b098defB751B7401B5f6d8976F';
+  let activeProvider = 'Robinhood Wallet';
 
   const walletModal = document.getElementById('wallet-modal');
   const accountModal = document.getElementById('account-modal');
@@ -86,22 +86,69 @@ document.addEventListener('DOMContentLoaded', () => {
   const connectingStatusText = document.getElementById('connecting-status-text');
 
   function openModal(modal) {
-    if (modal) modal.classList.add('active');
+    if (modal) {
+      modal.classList.add('active');
+      modal.style.display = 'flex';
+    }
   }
 
   function closeModal(modal) {
-    if (modal) modal.classList.remove('active');
+    if (modal) {
+      modal.classList.remove('active');
+      setTimeout(() => { modal.style.display = 'none'; }, 200);
+    }
   }
 
+  function setConnectedState(address, providerName = 'Robinhood Wallet') {
+    isWalletConnected = true;
+    activeAddress = address;
+    activeProvider = providerName;
+
+    const shortAddr = `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+    const textSpan = document.getElementById('wallet-text');
+    if (textSpan) textSpan.innerText = shortAddr;
+
+    const fullAddrEl = document.getElementById('account-full-addr');
+    if (fullAddrEl) fullAddrEl.innerText = address;
+
+    if (btnWallet) {
+      btnWallet.classList.add('btn-glass');
+      btnWallet.style.borderColor = 'var(--primary-purple)';
+    }
+
+    showToast(`Wallet Connected: ${shortAddr} (${providerName})`, 'success');
+  }
+
+  function setDisconnectedState() {
+    isWalletConnected = false;
+    activeAddress = '0x71C7656EC7ab88b098defB751B7401B5f6d8976F';
+
+    const textSpan = document.getElementById('wallet-text');
+    if (textSpan) textSpan.innerText = 'Connect Wallet';
+
+    if (btnWallet) {
+      btnWallet.classList.remove('btn-glass');
+      btnWallet.style.borderColor = '';
+    }
+
+    showToast('Wallet disconnected', 'info');
+  }
+
+  // Trigger Wallet Connection
+  window.connectValoraWallet = function() {
+    if (!isWalletConnected) {
+      if (walletConnectingState) walletConnectingState.style.display = 'none';
+      if (walletProvidersList) walletProvidersList.style.display = 'flex';
+      openModal(walletModal);
+    } else {
+      openModal(accountModal);
+    }
+  };
+
   if (btnWallet) {
-    btnWallet.addEventListener('click', () => {
-      if (!isWalletConnected) {
-        if (walletConnectingState) walletConnectingState.style.display = 'none';
-        if (walletProvidersList) walletProvidersList.style.display = 'flex';
-        openModal(walletModal);
-      } else {
-        openModal(accountModal);
-      }
+    btnWallet.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.connectValoraWallet();
     });
   }
 
@@ -116,26 +163,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Handle Provider Selection
+  // Handle Provider Click (MetaMask Web3 or Fallback Simulation)
   document.querySelectorAll('.wallet-provider-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       const provider = btn.getAttribute('data-provider');
-      currentProvider = provider;
 
       if (walletProvidersList) walletProvidersList.style.display = 'none';
       if (walletConnectingState) walletConnectingState.style.display = 'flex';
       if (connectingStatusText) connectingStatusText.innerText = `Connecting to ${provider}...`;
 
+      // Try Real Web3 window.ethereum if available
+      if ((provider === 'MetaMask' || provider === 'Coinbase Wallet') && window.ethereum) {
+        try {
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          if (accounts && accounts.length > 0) {
+            closeModal(walletModal);
+            setConnectedState(accounts[0], provider);
+            return;
+          }
+        } catch (err) {
+          console.warn('Web3 connection cancelled, falling back to Robinhood simulation', err);
+        }
+      }
+
+      // Default Simulation Delay
       setTimeout(() => {
-        isWalletConnected = true;
         closeModal(walletModal);
-
-        const textSpan = document.getElementById('wallet-text');
-        if (textSpan) textSpan.innerText = `${fullAddress.substring(0, 6)}...${fullAddress.substring(38)}`;
-        if (btnWallet) btnWallet.classList.add('btn-glass');
-
-        showToast(`Connected to ${provider} (${fullAddress.substring(0, 6)}...${fullAddress.substring(38)})`, 'success');
-      }, 1000);
+        setConnectedState('0x71C7656EC7ab88b098defB751B7401B5f6d8976F', provider);
+      }, 800);
     });
   });
 
@@ -143,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCopyAccAddr = document.getElementById('btn-copy-account-addr');
   if (btnCopyAccAddr) {
     btnCopyAccAddr.addEventListener('click', () => {
-      navigator.clipboard.writeText(fullAddress);
+      navigator.clipboard.writeText(activeAddress);
       showToast('Wallet address copied to clipboard!', 'success');
     });
   }
@@ -152,14 +207,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnDisconnect = document.getElementById('btn-disconnect-wallet');
   if (btnDisconnect) {
     btnDisconnect.addEventListener('click', () => {
-      isWalletConnected = false;
       closeModal(accountModal);
-
-      const textSpan = document.getElementById('wallet-text');
-      if (textSpan) textSpan.innerText = 'Connect Wallet';
-      if (btnWallet) btnWallet.classList.remove('btn-glass');
-
-      showToast('Wallet disconnected', 'info');
+      setDisconnectedState();
     });
   }
 
@@ -167,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnExplorer = document.getElementById('btn-explorer');
   if (btnExplorer) {
     btnExplorer.addEventListener('click', () => {
-      showToast('Opening address on Robinhood Chain Explorer...', 'info');
+      showToast(`Viewing ${activeAddress.substring(0, 8)}... on Robinhood Chain Explorer`, 'info');
     });
   }
 
