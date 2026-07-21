@@ -3,13 +3,86 @@
    Interactive Engine & Robinhood Chain Sim
 ---------------------------------------------------- */
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Initialize Lucide Icons
-  if (window.lucide) {
-    lucide.createIcons();
+// Global State
+let isWalletConnected = false;
+let activeAddress = '0x71C7656EC7ab88b098defB751B7401B5f6d8976F';
+let activeProvider = 'Robinhood Wallet';
+
+// Global Toast Function (Callable from anywhere)
+window.showValoraToast = function(message, type = 'success') {
+  let container = document.getElementById('toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toast-container';
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+  }
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `
+    <i data-lucide="${type === 'success' ? 'check-circle' : 'info'}"></i>
+    <span>${message}</span>
+  `;
+  container.appendChild(toast);
+  if (window.lucide) lucide.createIcons();
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(100%)';
+    setTimeout(() => toast.remove(), 300);
+  }, 4000);
+};
+
+// Global Connect Wallet Trigger
+window.connectValoraWallet = async function() {
+  const walletModal = document.getElementById('wallet-modal');
+  const accountModal = document.getElementById('account-modal');
+
+  if (isWalletConnected) {
+    if (accountModal) {
+      accountModal.style.display = 'flex';
+      accountModal.style.opacity = '1';
+      accountModal.style.pointerEvents = 'auto';
+      accountModal.classList.add('active');
+    } else {
+      window.showValoraToast(`Wallet Connected: ${activeAddress.substring(0, 6)}...${activeAddress.substring(38)}`, 'success');
+    }
+    return;
   }
 
-  // Initial Data State
+  if (walletModal) {
+    const list = document.getElementById('wallet-providers-list');
+    const connecting = document.getElementById('wallet-connecting-state');
+    if (list) list.style.display = 'flex';
+    if (connecting) connecting.style.display = 'none';
+
+    walletModal.style.display = 'flex';
+    walletModal.style.opacity = '1';
+    walletModal.style.pointerEvents = 'auto';
+    walletModal.classList.add('active');
+  } else {
+    // Instant fallback if modal DOM missing
+    isWalletConnected = true;
+    const btnText = document.getElementById('wallet-text');
+    if (btnText) btnText.innerText = '0x71C7...976F';
+    window.showValoraToast('Connected to Robinhood Wallet (0x71C7...976F)', 'success');
+  }
+};
+
+window.closeValoraModal = function(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.remove('active');
+    modal.style.opacity = '0';
+    modal.style.pointerEvents = 'none';
+    setTimeout(() => { modal.style.display = 'none'; }, 200);
+  }
+};
+
+// Main DOM Logic
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.lucide) lucide.createIcons();
+
   let blockNumber = 14892104;
   let totalSettledUSD = 1248920400;
   let totalTxCount = 12842;
@@ -31,75 +104,76 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'AUD-88095', entity: 'Sequoia Heritage Partners', zkhash: '0x6e88...33b0', status: 'VERIFIED', jurisdiction: 'United States (SEC)', time: '2026-07-21 07:42:19' }
   ];
 
-  // 1. Toast Notification System
-  function showToast(message, type = 'success') {
-    const container = document.getElementById('toast-container');
-    if (!container) return;
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.innerHTML = `
-      <i data-lucide="${type === 'success' ? 'check-circle' : 'info'}"></i>
-      <span>${message}</span>
-    `;
-    container.appendChild(toast);
-    if (window.lucide) lucide.createIcons();
-
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transform = 'translateX(100%)';
-      setTimeout(() => toast.remove(), 300);
-    }, 4000);
-  }
-
-  // 2. Contract Address Copy
+  // Contract Copy Buttons
   const btnCopyCa = document.getElementById('btn-copy-ca');
   if (btnCopyCa) {
     btnCopyCa.addEventListener('click', () => {
       const caText = document.getElementById('ca-text').innerText;
       navigator.clipboard.writeText(caText);
       const copyTextSpan = document.getElementById('copy-text');
-      copyTextSpan.innerText = 'Copied!';
-      showToast('Robinhood Chain CA copied to clipboard!');
-      setTimeout(() => { copyTextSpan.innerText = 'Copy'; }, 2500);
+      if (copyTextSpan) copyTextSpan.innerText = 'Copied!';
+      window.showValoraToast('Robinhood Chain CA copied to clipboard!');
+      setTimeout(() => { if (copyTextSpan) copyTextSpan.innerText = 'Copy'; }, 2500);
     });
   }
 
   document.querySelectorAll('.btn-copy-secondary').forEach(btn => {
     btn.addEventListener('click', () => {
       navigator.clipboard.writeText('0xVAL0RA7796d10398A2f1b40019C8RobinhoodChain');
-      showToast('Robinhood Chain CA copied to clipboard!');
+      window.showValoraToast('Robinhood Chain CA copied to clipboard!');
     });
   });
 
-  // 3. Connect Wallet Engine (Web3 EIP-1193 + Interactive Modal Fallback)
-  let isWalletConnected = false;
-  let activeAddress = '0x71C7656EC7ab88b098defB751B7401B5f6d8976F';
-  let activeProvider = 'Robinhood Wallet';
+  // Modal Close Buttons
+  const btnCloseWallet = document.getElementById('btn-close-wallet-modal');
+  const btnCloseAccount = document.getElementById('btn-close-account-modal');
+  if (btnCloseWallet) btnCloseWallet.addEventListener('click', () => window.closeValoraModal('wallet-modal'));
+  if (btnCloseAccount) btnCloseAccount.addEventListener('click', () => window.closeValoraModal('account-modal'));
 
-  const walletModal = document.getElementById('wallet-modal');
-  const accountModal = document.getElementById('account-modal');
-  const btnWallet = document.getElementById('btn-connect-wallet');
-  const btnCloseWalletModal = document.getElementById('btn-close-wallet-modal');
-  const btnCloseAccountModal = document.getElementById('btn-close-account-modal');
-  const walletProvidersList = document.getElementById('wallet-providers-list');
-  const walletConnectingState = document.getElementById('wallet-connecting-state');
-  const connectingStatusText = document.getElementById('connecting-status-text');
-
-  function openModal(modal) {
+  ['wallet-modal', 'account-modal'].forEach(id => {
+    const modal = document.getElementById(id);
     if (modal) {
-      modal.classList.add('active');
-      modal.style.display = 'flex';
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) window.closeValoraModal(id);
+      });
     }
-  }
+  });
 
-  function closeModal(modal) {
-    if (modal) {
-      modal.classList.remove('active');
-      setTimeout(() => { modal.style.display = 'none'; }, 200);
-    }
-  }
+  // Handle Provider Option Buttons
+  document.querySelectorAll('.wallet-provider-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const provider = btn.getAttribute('data-provider');
+      const list = document.getElementById('wallet-providers-list');
+      const connecting = document.getElementById('wallet-connecting-state');
+      const textStatus = document.getElementById('connecting-status-text');
 
-  function setConnectedState(address, providerName = 'Robinhood Wallet') {
+      if (list) list.style.display = 'none';
+      if (connecting) connecting.style.display = 'flex';
+      if (textStatus) textStatus.innerText = `Connecting to ${provider}...`;
+
+      // Try Real Web3 Extension if available
+      if ((provider === 'MetaMask' || provider === 'Coinbase Wallet') && window.ethereum) {
+        try {
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          if (accounts && accounts.length > 0) {
+            window.closeValoraModal('wallet-modal');
+            completeConnection(accounts[0], provider);
+            return;
+          }
+        } catch (err) {
+          console.warn('Web3 user cancelled', err);
+        }
+      }
+
+      // Default Simulation Delay
+      setTimeout(() => {
+        window.closeValoraModal('wallet-modal');
+        completeConnection('0x71C7656EC7ab88b098defB751B7401B5f6d8976F', provider);
+      }, 700);
+    });
+  });
+
+  function completeConnection(address, providerName) {
     isWalletConnected = true;
     activeAddress = address;
     activeProvider = providerName;
@@ -111,104 +185,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const fullAddrEl = document.getElementById('account-full-addr');
     if (fullAddrEl) fullAddrEl.innerText = address;
 
+    const btnWallet = document.getElementById('btn-connect-wallet');
     if (btnWallet) {
       btnWallet.classList.add('btn-glass');
-      btnWallet.style.borderColor = 'var(--primary-purple)';
+      btnWallet.style.borderColor = '#00FF66';
     }
 
-    showToast(`Wallet Connected: ${shortAddr} (${providerName})`, 'success');
+    window.showValoraToast(`Connected to ${providerName} (${shortAddr})`, 'success');
   }
 
-  function setDisconnectedState() {
-    isWalletConnected = false;
-    activeAddress = '0x71C7656EC7ab88b098defB751B7401B5f6d8976F';
+  // Account Disconnect
+  const btnDisconnect = document.getElementById('btn-disconnect-wallet');
+  if (btnDisconnect) {
+    btnDisconnect.addEventListener('click', () => {
+      isWalletConnected = false;
+      window.closeValoraModal('account-modal');
 
-    const textSpan = document.getElementById('wallet-text');
-    if (textSpan) textSpan.innerText = 'Connect Wallet';
+      const textSpan = document.getElementById('wallet-text');
+      if (textSpan) textSpan.innerText = 'Connect Wallet';
 
-    if (btnWallet) {
-      btnWallet.classList.remove('btn-glass');
-      btnWallet.style.borderColor = '';
-    }
-
-    showToast('Wallet disconnected', 'info');
-  }
-
-  // Trigger Wallet Connection
-  window.connectValoraWallet = function() {
-    if (!isWalletConnected) {
-      if (walletConnectingState) walletConnectingState.style.display = 'none';
-      if (walletProvidersList) walletProvidersList.style.display = 'flex';
-      openModal(walletModal);
-    } else {
-      openModal(accountModal);
-    }
-  };
-
-  if (btnWallet) {
-    btnWallet.addEventListener('click', (e) => {
-      e.preventDefault();
-      window.connectValoraWallet();
-    });
-  }
-
-  if (btnCloseWalletModal) btnCloseWalletModal.addEventListener('click', () => closeModal(walletModal));
-  if (btnCloseAccountModal) btnCloseAccountModal.addEventListener('click', () => closeModal(accountModal));
-
-  [walletModal, accountModal].forEach(modal => {
-    if (modal) {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal(modal);
-      });
-    }
-  });
-
-  // Handle Provider Click (MetaMask Web3 or Fallback Simulation)
-  document.querySelectorAll('.wallet-provider-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const provider = btn.getAttribute('data-provider');
-
-      if (walletProvidersList) walletProvidersList.style.display = 'none';
-      if (walletConnectingState) walletConnectingState.style.display = 'flex';
-      if (connectingStatusText) connectingStatusText.innerText = `Connecting to ${provider}...`;
-
-      // Try Real Web3 window.ethereum if available
-      if ((provider === 'MetaMask' || provider === 'Coinbase Wallet') && window.ethereum) {
-        try {
-          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-          if (accounts && accounts.length > 0) {
-            closeModal(walletModal);
-            setConnectedState(accounts[0], provider);
-            return;
-          }
-        } catch (err) {
-          console.warn('Web3 connection cancelled, falling back to Robinhood simulation', err);
-        }
+      const btnWallet = document.getElementById('btn-connect-wallet');
+      if (btnWallet) {
+        btnWallet.classList.remove('btn-glass');
+        btnWallet.style.borderColor = '';
       }
 
-      // Default Simulation Delay
-      setTimeout(() => {
-        closeModal(walletModal);
-        setConnectedState('0x71C7656EC7ab88b098defB751B7401B5f6d8976F', provider);
-      }, 800);
+      window.showValoraToast('Wallet disconnected', 'info');
     });
-  });
+  }
 
-  // Copy Account Address
+  // Copy Account Address in Modal
   const btnCopyAccAddr = document.getElementById('btn-copy-account-addr');
   if (btnCopyAccAddr) {
     btnCopyAccAddr.addEventListener('click', () => {
       navigator.clipboard.writeText(activeAddress);
-      showToast('Wallet address copied to clipboard!', 'success');
-    });
-  }
-
-  // Disconnect Wallet
-  const btnDisconnect = document.getElementById('btn-disconnect-wallet');
-  if (btnDisconnect) {
-    btnDisconnect.addEventListener('click', () => {
-      closeModal(accountModal);
-      setDisconnectedState();
+      window.showValoraToast('Wallet address copied to clipboard!', 'success');
     });
   }
 
@@ -216,45 +227,38 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnExplorer = document.getElementById('btn-explorer');
   if (btnExplorer) {
     btnExplorer.addEventListener('click', () => {
-      showToast(`Viewing ${activeAddress.substring(0, 8)}... on Robinhood Chain Explorer`, 'info');
+      window.showValoraToast(`Viewing ${activeAddress.substring(0, 8)}... on Robinhood Explorer`, 'info');
     });
   }
 
-  // 4. Robinhood Block Height Live Ticker
+  // Live Block Height Ticker
   const blockEl = document.getElementById('block-height');
   setInterval(() => {
     blockNumber += 1;
-    if (blockEl) {
-      blockEl.innerText = `#${blockNumber.toLocaleString()}`;
-    }
+    if (blockEl) blockEl.innerText = `#${blockNumber.toLocaleString()}`;
   }, 3500);
 
-  // 5. DApp Tab Switcher
+  // Tab Switcher
   const tabBtns = document.querySelectorAll('.tab-btn');
   const tabContents = document.querySelectorAll('.tab-content');
 
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetTab = btn.getAttribute('data-tab');
-
       tabBtns.forEach(b => b.classList.remove('active'));
       tabContents.forEach(c => c.classList.remove('active'));
 
       btn.classList.add('active');
       const contentEl = document.getElementById(targetTab);
-      if (contentEl) {
-        contentEl.classList.add('active');
-      }
+      if (contentEl) contentEl.classList.add('active');
     });
   });
 
-  // Feature Cards Navigation Trigger
+  // Feature Cards Click Navigation
   document.querySelectorAll('.feature-card').forEach(card => {
     card.addEventListener('click', () => {
       const dappSec = document.getElementById('dapp-section');
-      if (dappSec) {
-        dappSec.scrollIntoView({ behavior: 'smooth' });
-      }
+      if (dappSec) dappSec.scrollIntoView({ behavior: 'smooth' });
       const featType = card.getAttribute('data-feature');
       if (featType === 'pe-payments') switchTab('tab-payment');
       else if (featType === 'tokenized-asset') switchTab('tab-tokens');
@@ -269,11 +273,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btn) btn.click();
   }
 
-  // 6. Chart.js Initialization
-  initCharts();
-
-  function initCharts() {
-    // Volume Chart
+  // Chart.js Init
+  if (window.Chart) {
     const ctxVol = document.getElementById('volumeChart');
     if (ctxVol) {
       const gradVol = ctxVol.getContext('2d').createLinearGradient(0, 0, 0, 200);
@@ -308,7 +309,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Allocation Chart
     const ctxAlloc = document.getElementById('allocationChart');
     if (ctxAlloc) {
       new Chart(ctxAlloc, {
@@ -318,9 +318,6 @@ document.addEventListener('DOMContentLoaded', () => {
           datasets: [{
             data: [42, 35, 13, 10],
             backgroundColor: ['#00FF66', '#39FF14', '#00E605', '#10B981'],
-            borderWidth: 0
-          }]
-            backgroundColor: ['#A855F7', '#06B6D4', '#10B981', '#F59E0B'],
             borderWidth: 0
           }]
         },
@@ -338,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 7. Render Ledger Table
+  // Render Ledger
   function renderLedger() {
     const tbody = document.getElementById('ledger-body');
     if (!tbody) return;
@@ -360,16 +357,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   renderLedger();
 
-  // Refresh Ledger Button
   const btnRefreshLedger = document.getElementById('btn-refresh-ledger');
   if (btnRefreshLedger) {
     btnRefreshLedger.addEventListener('click', () => {
       renderLedger();
-      showToast('Ledger synced with Robinhood Chain block state');
+      window.showValoraToast('Ledger synced with Robinhood Chain block state');
     });
   }
 
-  // 8. Payment Terminal Form Execution
+  // Payment Form Execution
   const payForm = document.getElementById('payment-form');
   if (payForm) {
     payForm.addEventListener('submit', (e) => {
@@ -384,7 +380,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const txHash = '0x' + Math.random().toString(16).substring(2, 12);
       const logs = document.getElementById('payment-terminal-logs');
 
-      // Append Terminal Logs
       appendLog(logs, `[TX INIT] Creating ${payType} on Robinhood Chain...`, 'color-cyan');
       appendLog(logs, `[VALORA ESCROW] Validating ZK-KYC Whitelist for ${recipient.substring(0, 10)}...`, 'text-muted');
 
@@ -396,7 +391,6 @@ document.addEventListener('DOMContentLoaded', () => {
         appendLog(logs, `[CONFIRMED] Settlement Complete! TX Hash: ${txHash}`, 'color-green');
         appendLog(logs, `[FINALITY] Amount: $${payAmount.toLocaleString()} settled via ${tokenAsset}`, 'color-purple');
 
-        // Add to ledger
         initialLedger.unshift({
           txHash,
           type: payType,
@@ -407,18 +401,19 @@ document.addEventListener('DOMContentLoaded', () => {
           date: 'Just now'
         });
 
-        // Update Stats
         totalSettledUSD += payAmount;
         totalTxCount += 1;
 
-        document.getElementById('dash-val-volume').innerText = `$${totalSettledUSD.toLocaleString()}`;
-        document.getElementById('dash-val-txs').innerText = totalTxCount.toLocaleString();
+        const volEl = document.getElementById('dash-val-volume');
+        const txsEl = document.getElementById('dash-val-txs');
+        if (volEl) volEl.innerText = `$${totalSettledUSD.toLocaleString()}`;
+        if (txsEl) txsEl.innerText = totalTxCount.toLocaleString();
 
         const liveTxMeta = document.getElementById('live-tx-meta');
         if (liveTxMeta) liveTxMeta.innerText = `${payFund} • $${payAmount.toLocaleString()}`;
 
         renderLedger();
-        showToast(`Payment of $${payAmount.toLocaleString()} executed successfully on Robinhood Chain!`, 'success');
+        window.showValoraToast(`Payment of $${payAmount.toLocaleString()} executed on Robinhood Chain!`, 'success');
       }, 1200);
     });
   }
@@ -432,15 +427,15 @@ document.addEventListener('DOMContentLoaded', () => {
     parent.scrollTop = parent.scrollHeight;
   }
 
-  // 9. Token Minting Mock
+  // Token Mint Buttons
   document.querySelectorAll('.btn-mint-token').forEach(btn => {
     btn.addEventListener('click', () => {
       const token = btn.getAttribute('data-token');
-      showToast(`Initiating ERC-3643 share mint for ${token} on Robinhood Chain...`, 'success');
+      window.showValoraToast(`Initiating ERC-3643 share mint for ${token}...`, 'success');
     });
   });
 
-  // 10. Escrow Deployment Form
+  // Escrow Form
   const escrowForm = document.getElementById('escrow-form');
   if (escrowForm) {
     escrowForm.addEventListener('submit', (e) => {
@@ -469,7 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
         bindEscrowRelease(vaultDiv.querySelector('.btn-release-escrow'));
       }
 
-      showToast(`Smart Escrow Vault deployed on Robinhood Chain!`, 'success');
+      window.showValoraToast(`Smart Escrow Vault deployed on Robinhood Chain!`, 'success');
     });
   }
 
@@ -483,15 +478,14 @@ document.addEventListener('DOMContentLoaded', () => {
         badge.innerText = 'Released / Settled';
       }
       btn.remove();
-      showToast('Escrow funds released to LP recipient', 'success');
+      window.showValoraToast('Escrow funds released to LP recipient', 'success');
     });
   }
 
   document.querySelectorAll('.btn-release-escrow').forEach(btn => bindEscrowRelease(btn));
 
-  // 11. Cross-Border FX Engine
+  // FX Engine
   const rates = { USD: 1, EUR: 0.9205, GBP: 0.7850, SGD: 1.3420, JPY: 155.40 };
-
   const fxAmountFrom = document.getElementById('fx-amount-from');
   const fxAmountTo = document.getElementById('fx-amount-to');
   const fxCurrFrom = document.getElementById('fx-curr-from');
@@ -531,14 +525,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnExecuteFx) {
     btnExecuteFx.addEventListener('click', () => {
-      showToast(`Global Cross-Border FX Settlement executed on Robinhood Chain!`, 'success');
+      window.showValoraToast(`Global Cross-Border FX Settlement executed!`, 'success');
     });
   }
 
-  // Initial calculation
   calculateFx();
 
-  // 12. Audit & Compliance Logs Renderer & Filter
+  // Compliance Table
   function renderCompliance(data) {
     const tbody = document.getElementById('compliance-body');
     if (!tbody) return;
@@ -559,7 +552,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   renderCompliance(complianceLogs);
 
-  // Search & Filter
   const complianceSearch = document.getElementById('compliance-search');
   const complianceFilter = document.getElementById('compliance-filter');
 
@@ -581,7 +573,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (complianceSearch) complianceSearch.addEventListener('input', filterCompliance);
   if (complianceFilter) complianceFilter.addEventListener('change', filterCompliance);
 
-  // Export JSON Audit Log
   const btnExportAudit = document.getElementById('btn-export-audit');
   if (btnExportAudit) {
     btnExportAudit.addEventListener('click', () => {
@@ -592,7 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
-      showToast('Compliance audit trail exported to JSON!', 'success');
+      window.showValoraToast('Compliance audit trail exported to JSON!', 'success');
     });
   }
 });
